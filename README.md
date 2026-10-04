@@ -21,12 +21,12 @@ No account on someone else's server, no subscription, no ads. Just `docker compo
 <br>
 [![Pipeline](https://gitlab.com/DuarteSantos8/opengym/badges/main/pipeline.svg?style=flat-square)](https://gitlab.com/DuarteSantos8/opengym/-/pipelines)
 [![Coverage](https://gitlab.com/DuarteSantos8/opengym/badges/main/coverage.svg?job=test:frontend&style=flat-square)](https://gitlab.com/DuarteSantos8/opengym/-/pipelines?ref=main)
-[![Release](https://img.shields.io/github/v/release/DuarteSantos8/openGym?style=flat-square)](https://github.com/DuarteSantos8/openGym/releases)
-![Last commit](https://img.shields.io/github/last-commit/DuarteSantos8/openGym?style=flat-square)
-[![GitHub stars](https://img.shields.io/github/stars/DuarteSantos8/openGym?style=flat-square&logo=github&logoColor=white)](https://github.com/DuarteSantos8/openGym/stargazers)
-[![Issues](https://img.shields.io/github/issues/DuarteSantos8/openGym?style=flat-square)](https://github.com/DuarteSantos8/openGym/issues)
-[![Tests](https://github.com/DuarteSantos8/openGym/actions/workflows/test.yml/badge.svg)](https://github.com/DuarteSantos8/openGym/actions/workflows/test.yml)
-[![Mirror](https://github.com/DuarteSantos8/openGym/actions/workflows/mirror.yml/badge.svg)](https://github.com/DuarteSantos8/openGym/actions/workflows/mirror.yml)
+[![Release](https://img.shields.io/github/v/release/ShivamPal7/betterGym?style=flat-square)](https://github.com/ShivamPal7/betterGym/releases)
+![Last commit](https://img.shields.io/github/last-commit/ShivamPal7/betterGym?style=flat-square)
+[![GitHub stars](https://img.shields.io/github/stars/ShivamPal7/betterGym?style=flat-square&logo=github&logoColor=white)](https://github.com/ShivamPal7/betterGym/stargazers)
+[![Issues](https://img.shields.io/github/issues/ShivamPal7/betterGym?style=flat-square)](https://github.com/ShivamPal7/betterGym/issues)
+[![Tests](https://github.com/ShivamPal7/betterGym/actions/workflows/test.yml/badge.svg)](https://github.com/ShivamPal7/betterGym/actions/workflows/test.yml)
+[![Mirror](https://github.com/ShivamPal7/betterGym/actions/workflows/mirror.yml/badge.svg)](https://github.com/ShivamPal7/betterGym/actions/workflows/mirror.yml)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/e62jY6fwVb)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-support-FFDD00?style=flat-square&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/duartesantos)
 
@@ -46,11 +46,9 @@ No account on someone else's server, no subscription, no ads. Just `docker compo
 
 <div align="center">
 
-### [🌐 opengym.duarte-santos.ch](https://opengym.duarte-santos.ch) · [📦 Source on GitHub](https://github.com/DuarteSantos8/openGym) · [🦊 GitLab mirror](https://gitlab.com/DuarteSantos8/opengym)
+### [📦 Source on GitHub](https://github.com/ShivamPal7/betterGym)
 
-Screenshots, docs and the APK download live on the site.<br>
-<sub>Want to poke at it first? The <a href="https://opengym.duarte-santos.ch/demo/">in-browser
-demo</a> is the real app with example data — no account, nothing to install.</sub>
+Screenshots, docs and APK releases live in the repository.
 
 </div>
 
@@ -110,15 +108,15 @@ as a home-screen app, passkey sign-in, offline support, sync across your phone a
 - 📦 **Yours to keep** — one-tap JSON export/import, guest mode, **no telemetry**; switching kg ↔ lb offers to convert every stored number
 - 🤖 **Ask an AI about your training** (optional) — an [MCP server](mcp/README.md) lets a client like Claude Desktop or Cursor read your history in your own words: *"what did I bench last week?"*. Read-only, spawned locally by the client, nothing leaves your box. Not in the Docker build — if you don't use an AI assistant, it isn't there
 - 🧠 **An AI coach that writes your plan** (optional, off by default) — answer a handful of questions and it designs a week of routines; later it reads what you actually logged and proposes changes, each one with the evidence behind it. You approve every change and can undo it. It runs on **your** server under **your** provider account — Anthropic, OpenAI, Gemini or any OpenAI-compatible endpoint (Ollama on your LAN counts) with a pasted API key on the default image, or the Claude Agent SDK / Codex CLI on a separate build. The phone app can use your instance or its own key. See [docs/AI_COACH.md](docs/AI_COACH.md)
-- 📱 **Standalone Android app** — the whole tracker as a sideloadable APK: no account, no server, data on the phone, native workout reminders, the rest countdown in a notification that stays on time with the screen off, and an **in-app update check** that downloads the next signed APK and verifies its checksum ([download](https://opengym.duarte-santos.ch))
+- 📱 **Standalone Android app** — the whole tracker as a sideloadable APK: no account, no server, data on the phone, native workout reminders, the rest countdown in a notification that stays on time with the screen off, and an **in-app update check** that downloads the next signed APK and verifies its checksum ([download](https://github.com/ShivamPal7/betterGym/releases))
 
 ## Quick start (self-host)
 
 You need [Docker](https://docs.docker.com/get-docker/) with Compose.
 
 ```bash
-git clone https://github.com/DuarteSantos8/openGym
-cd openGym
+git clone https://github.com/ShivamPal7/betterGym
+cd betterGym
 cp .env.example .env
 docker compose pull   # grab prebuilt images (amd64 + arm64) — skip to build from source instead
 docker compose up -d
@@ -150,11 +148,9 @@ no backend — everything stays on the phone, with native workout-day reminders 
 backups. Self-hosting gets you multi-device sync and profiles for friends & family; the
 mobile app is the install-and-done flavor.
 
-- **Android:** [**download the APK**](https://opengym.duarte-santos.ch) — or straight from
-  [GitLab's package registry](https://gitlab.com/DuarteSantos8/opengym/-/packages) or the
-  [GitHub release](https://github.com/DuarteSantos8/openGym/releases/latest), where every
-  build sits next to its `.sha256` — and sideload it; openGym is deliberately not on the Play
-  Store. Or build it yourself: **[docs/MOBILE.md](docs/MOBILE.md)**.
+- **Android:** [**download the APK**](https://github.com/ShivamPal7/betterGym/releases) — straight from the
+  [GitHub releases](https://github.com/ShivamPal7/betterGym/releases/latest), where every
+  build sits next to its `.sha256` — and sideload it. Or build it yourself: **[docs/MOBILE.md](docs/MOBILE.md)**.
 - **iPhone:** Apple doesn't allow installing apps outside the App Store, so there is no iOS
   download. Self-host and add it to your home screen from Safari (it's a full PWA), or build
   the native app onto your own device from Xcode — see **[docs/MOBILE.md](docs/MOBILE.md)**.
@@ -178,7 +174,7 @@ mobile app is the install-and-done flavor.
 - **api/** — Node with no framework, two dependencies (`@simplewebauthn/server` for passkeys, `web-push` for notifications), storing everything as plain JSON files under `./data`
 - **web/** — a multi-stage image that builds the frontend and serves it with nginx, proxying `/api` to the backend so it's all on **one origin** (passkeys require this)
 
-The full HTTP API is documented as an OpenAPI spec in [`api/openapi.yaml`](api/openapi.yaml) — browsable at [opengym.duarte-santos.ch/api.html](https://opengym.duarte-santos.ch/api.html).
+The full HTTP API is documented as an OpenAPI spec in [`api/openapi.yaml`](api/openapi.yaml).
 
 ## Your data
 
@@ -222,7 +218,7 @@ host side of that volume, not the variable.
 ## Roadmap
 
 The plan lives in [ROADMAP.md](ROADMAP.md), and the
-[GitHub milestones](https://github.com/DuarteSantos8/openGym/milestones) hold the issues. **A release every
+[GitHub milestones](https://github.com/ShivamPal7/betterGym/milestones) hold the issues. **A release every
 two weeks**, each one small and themed: the promised items, editing finished workouts, the session queue,
 programmes and phases, the progression engine, cardio — then **v1.4.0, the foundation: storage moves to a
 database and search is rebuilt, the one compatibility break** — then accounts (password and OIDC login,
@@ -257,13 +253,13 @@ in the Docker build.
 
 - **[Discord](https://discord.gg/e62jY6fwVb)** — release announcements, self-hosting help and
   the back-and-forth that would be a slow issue thread. Quickest way to get an answer.
-- **[Issues](https://github.com/DuarteSantos8/openGym/issues)** — bugs, questions, self-hosting
+- **[Issues](https://github.com/ShivamPal7/betterGym/issues)** — bugs, questions, self-hosting
   help and ideas. (Issues still open on the GitLab mirror are read too.) Label a question
   `question` and an idea `idea`, and it gets treated as one rather than as agreed-on work. Use
   an issue over the Discord for anything the next person should be able to find by searching.
 - **Login trouble?** Most of it is an `RP_ID`/`ORIGIN` mismatch — check
   [docs/SELF_HOSTING.md](docs/SELF_HOSTING.md) before opening an issue.
-- **[Pull requests](https://github.com/DuarteSantos8/openGym/pulls)** — see
+- **[Pull requests](https://github.com/ShivamPal7/betterGym/pulls)** — see
   [CONTRIBUTING.md](CONTRIBUTING.md). Merge requests already open on the GitLab mirror are still
   reviewed and land on `main` here; new work, please, as a pull request.
 

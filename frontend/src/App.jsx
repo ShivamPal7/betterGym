@@ -26,6 +26,7 @@ import TimerFlash from './components/TimerFlash.jsx'
 import { openDeviceLinkRedeem } from './components/Passkeys.jsx'
 import Login from './views/Login.jsx'
 import MobileOnboarding from './views/MobileOnboarding.jsx'
+import Onboarding from './views/Onboarding.jsx'
 import Home from './views/Home.jsx'
 import CheckIn from './views/CheckIn.jsx'
 import Plan from './views/Plan.jsx'
@@ -159,6 +160,7 @@ function Shell() {
   useWakeLock(!!S.active && !S.active.editingWorkoutId && S.keepAwake !== false)
 
   const authed = user || isGuest
+  const needsOnboarding = authed && S.onboarded !== true && (!S.workouts || S.workouts.length === 0)
   if (!ready && !authed) return (
     <div id="app">
       <div style={{ paddingTop: '44vh', display: 'flex', justifyContent: 'center', fontSize: 34, color: 'var(--label-3)' }}>
@@ -175,7 +177,8 @@ function Shell() {
         <ErrorBoundary>
           {!authed ? <Login /> : needsMobileOnboarding ? <MobileOnboarding /> : (
             <Routes>
-              <Route path="/home" element={<Home />} />
+              <Route path="/home" element={needsOnboarding ? <Navigate to="/onboarding" replace /> : <Home />} />
+              <Route path="/onboarding" element={<Onboarding />} />
               {/* Gym check-in — switched off in Settings, the route falls through to the
                   catch-all redirect below. */}
               {S.checkIn !== false && <Route path="/checkin" element={<CheckIn />} />}
@@ -196,7 +199,7 @@ function Shell() {
               <Route path="/coach/proposal" element={<Navigate to="/coach" replace />} />
               <Route path="/coach/setup" element={<CoachSetup />} />
               <Route path="/admin" element={user?.admin ? <Admin /> : <Navigate to="/home" replace />} />
-              <Route path="*" element={<Navigate to="/home" replace />} />
+              <Route path="*" element={<Navigate to={needsOnboarding ? "/onboarding" : "/home"} replace />} />
             </Routes>
           )}
         </ErrorBoundary>
@@ -206,7 +209,7 @@ function Shell() {
           including on the sign-in screen, when the server has just ended the session. */}
       <SyncBanner />
       {/* The chat owns the bottom of the screen: its composer sits where the tabs would be. */}
-      {loc.pathname !== '/coach' && <TabBar onStart={startFlow} />}
+      {loc.pathname !== '/coach' && loc.pathname !== '/onboarding' && <TabBar onStart={startFlow} />}
       <RestTimer />
       <Modals />
       <Toast />

@@ -22,6 +22,7 @@ import { RTL_LANGS } from '../lib/i18n-core.js'
 import { DEFAULT_TEMPLATE_ID } from '../lib/structuralBalanceTemplates.js'
 
 import { WC_DEFAULT } from '../lib/workout-controls.js'
+import { buildStarterPlan } from '../lib/starter.js'
 
 const KEY = 'gym_state_v1'
 // Where the saved copy stands with the server: the revision it descends from, and its own `_ts`
@@ -76,6 +77,7 @@ export const DEF = {
   theme: 'dark', accent: 'lime', body: 'male', targetW: null,
   bodyweight: [], routines: [], week: {}, dayPlan: {},
   exWeights: {}, workouts: [], active: null, customEx: [], gifSize: 'full',
+  onboarded: false, profile: null,
   // Stats activity heatmap metric. Profiles without this key continue to open on time.
   heatmapMetric: 'time',
   // How the active workout is laid out — 'cards' (one exercise at a time with Prev/Next),
@@ -977,6 +979,27 @@ export const useStore = create((set, get) => {
       let removed = false
       get().update(S => { removed = deleteEditedWorkout(S) })
       return removed
+    },
+    // Onboarding completion: persists profile, initial weigh-in, target weight, units, and optional starter plan.
+    completeOnboarding(profile, planId) {
+      get().update(S => {
+        S.onboarded = true
+        S.profile = profile
+        if (profile.unit) S.unit = profile.unit
+        if (profile.sex) S.body = profile.sex
+        if (profile.targetWeight) S.targetW = Number(profile.targetWeight)
+        if (profile.weight && !S.bodyweight.length) {
+          const today = new Date().toISOString().slice(0, 10)
+          S.bodyweight.push({ d: today, w: Number(profile.weight), t: Date.now() })
+        }
+        if (planId) {
+          const plan = buildStarterPlan(planId)
+          if (plan) {
+            S.routines.push(...plan.routines)
+            plan.schedule.forEach(({ day, routineId }) => { S.week[day] = [routineId] })
+          }
+        }
+      })
     },
     // Settings → unit. `convert` walks every stored weight into the new unit (lib/units.js); off,
     // only the label changes. Either way the choice is stamped (`unitSet`), so a merge with a

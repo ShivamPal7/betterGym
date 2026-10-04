@@ -8,13 +8,13 @@ The app supports exporting and an export always contain *every* current routine.
 If you don't want to share every plan that you have currently created, you can either:
 - edit the exported json with a text editor  
   or (if you don't feel like editing json files):
-- open the [Demo](https://opengym.duarte-santos.ch/demo/#/home)
+- open the web app
     - import your plans
     - make changes 
     - export a new json file for sharing
 
-If you are using the standalone app on your mobile, you can use the demo for creating plans on your PC and import them.  
-The demo stores all data in your browser, it is not public or shared in any way.
+If you are using the standalone app on your mobile, you can use the web app on your PC to create plans and import them.  
+The app stores all local data in your browser, it is not public or shared in any way.
 
 Writing a json file yourself will be a bit of a complex task since the IDs of the exercises have to match the IDs in the database.  
 

@@ -2,6 +2,7 @@ import React, { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import { parseHTML } from 'linkedom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import '../lib/coach-demo.js'
 import CoachChat from './CoachChat.jsx'
 
 // The demo Coach's failure state, end to end. Every other CoachChat test mocks lib/coach-api.js;
@@ -60,7 +61,11 @@ function installDom() {
 const chip = re => [...container.querySelectorAll('.qchip')].find(b => re.test(b.textContent || ''))
 async function click(el) {
   expect(el).toBeTruthy()
-  await act(async () => { el.dispatchEvent(new dom.Event('click', { bubbles: true })); await flush() })
+  await act(async () => {
+    el.dispatchEvent(new dom.Event('click', { bubbles: true }))
+    await flush()
+    await flush()
+  })
 }
 // Microtasks only: the dynamic import of coach-demo.js and the status refresh both settle here.
 const flush = async () => { for (let i = 0; i < 20; i++) await Promise.resolve() }

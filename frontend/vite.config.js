@@ -1,5 +1,7 @@
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, createReadStream } from 'node:fs'
 import { createHash } from 'node:crypto'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -10,7 +12,6 @@ const backend = process.env.API_TARGET || 'http://127.0.0.1:3000'
 // presenting the expected Origin here covers the ones that don't send it. Match your .env if you
 // changed ORIGIN: API_ORIGIN=https://gym.example.com npm run dev
 const apiOrigin = process.env.API_ORIGIN || 'http://localhost:8080'
-const media = process.env.MEDIA_TARGET || 'http://127.0.0.1:8888'
 
 // Optional web analytics (Umami). Injected only when BOTH vars are set at build time,
 // so a plain `npm run build` — and every self-hosted install — stays telemetry-free.
@@ -58,9 +59,36 @@ const swStamp = {
 const pkgVersion = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')).version
 const appVersion = process.env.APP_BUILD ? `${pkgVersion}+${process.env.APP_BUILD}` : pkgVersion
 
+const mediaPlugin = {
+  name: 'opengym-media-handler',
+  configureServer(server) {
+    const rootMedia = fileURLToPath(new URL('../media', import.meta.url))
+    server.middlewares.use((req, res, next) => {
+      const pathname = req.url ? req.url.split('?')[0] : ''
+      const match = /^\/(img|gif)\/(.+)$/.exec(pathname)
+      if (!match) return next()
+
+      const [, type, filename] = match
+      const localFile = join(rootMedia, type, filename)
+      if (existsSync(localFile)) {
+        res.setHeader('Content-Type', type === 'gif' ? 'image/gif' : 'image/jpeg')
+        res.setHeader('Cache-Control', 'public, max-age=86400')
+        return createReadStream(localFile).pipe(res)
+      }
+
+      // If local file is not downloaded yet, fallback to the official upstream CDN
+      const cdnBase = type === 'gif'
+        ? 'https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/'
+        : 'https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/images/'
+      res.writeHead(302, { Location: cdnBase + filename, 'Access-Control-Allow-Origin': '*' })
+      res.end()
+    })
+  }
+}
+
 export default defineConfig({
   define: { __APP_VERSION__: JSON.stringify(appVersion) },
-  plugins: [react(), umami, swStamp],
+  plugins: [react(), umami, swStamp, mediaPlugin],
   base: './',
   server: {
     // The Coach's core (payload, validator, prompts, HTTP adapters) lives in ../api/coach/core
@@ -68,9 +96,7 @@ export default defineConfig({
     // server needs to be told the workspace is wider than frontend/.
     fs: { allow: ['..'] },
     proxy: {
-      '/api': { target: backend, changeOrigin: true, headers: { Origin: apiOrigin } },
-      '/img': { target: media, changeOrigin: true },
-      '/gif': { target: media, changeOrigin: true }
+      '/api': { target: backend, changeOrigin: true, headers: { Origin: apiOrigin } }
     }
   },
   build: { chunkSizeWarningLimit: 1500 }
